@@ -37,7 +37,7 @@ async function ResponseError (res: express.Response, error: any, message: string
     success: false,
     message: message,
     code: code,
-    error: error
+    // error: error
   }
   return res.status(code).json(errorResponse)
 }

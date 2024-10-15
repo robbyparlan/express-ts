@@ -1,4 +1,4 @@
-import { SuccessResponse, HttpStatus } from '../utils/constant';
+import { HttpStatus } from '../utils/constant';
 import { AuthLoginDTO } from '../dtos/auth.dto';
 import { db, createError, logger } from '../utils/util'
 import bcrypt from "bcrypt";

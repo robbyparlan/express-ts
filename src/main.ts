@@ -5,10 +5,11 @@ import cors from "cors";
 import http from 'http';
 import multer from 'multer'
 import 'dotenv/config';
-import { CustomError, ErrorResponse, ApiEndpointVersion } from "./utils/constant";
+import { HttpStatus, CustomError, ErrorResponse, ApiEndpointVersion } from "./utils/constant";
 import { db, logger } from "./utils/util";
+import { RequestLogger } from "./utils/request.logger";
+import { ResponseLogger } from "./utils/response.logger";
 import appRouter from './routes/index.router'
-import { error } from "console";
 const upload = multer()
 
 const port = normalizePort(process.env.PORT || 3000)
@@ -29,6 +30,9 @@ function main() {
   app.use(cors({
     origin: '*'
   }))
+
+  app.use(RequestLogger)
+  app.use(ResponseLogger)
   
   app.get("/", (req: express.Request, res: express.Response) => {
     res.send("Bismillah Service HRIS")
@@ -37,29 +41,29 @@ function main() {
   app.use(ApiEndpointVersion.version, appRouter)
   
   app.use(function(req: express.Request, res: express.Response, next: express.NextFunction){
-    let errorResponse: ErrorResponse<Error> = {
+    let errorResponse: ErrorResponse = {
       success: false,
       message: "Endpoint Not Found",
-      code: 404,
+      code: HttpStatus.NOT_FOUND,
     };
     logger.info(`-------------------- Endpoint ${req.url} not found`)
-    res.status(404).json(errorResponse)
+    res.status(HttpStatus.NOT_FOUND).json(errorResponse)
   });
 
   // error handler
   app.use(function(err: CustomError, req: express.Request, res: express.Response, next: express.NextFunction) {
     // set locals, only providing error in development
-    const status = err.status || 500;
+    const status = err.status || HttpStatus.INTERNAL_SERVER_ERROR;
     const message = err.message || 'Internal Server Error';
   
-    let errorResponse: ErrorResponse<CustomError> = {
+    let errorResponse: ErrorResponse = {
       success: false,
       message: message,
       code: status,
       error: err
     };
     logger.info('----------------------------- Error : ', err)
-    res.status(500).json(errorResponse)
+    res.status(status).json(errorResponse)
   });
 
   server.listen(port);

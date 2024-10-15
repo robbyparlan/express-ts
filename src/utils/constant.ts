@@ -1,3 +1,18 @@
+export enum HttpStatus {
+  OK = 200,
+  CREATED = 201,
+  ACCEPTED = 202,
+  NO_CONTENT = 204,
+  BAD_REQUEST = 400,
+  UNAUTHORIZED = 401,
+  FORBIDDEN = 403,
+  NOT_FOUND = 404,
+  INTERNAL_SERVER_ERROR = 500,
+  BAD_GATEWAY = 502,
+  SERVICE_UNAVAILABLE = 503,
+  GATEWAY_TIMEOUT = 504,
+}
+
 export interface CustomError extends Error {
   status?: number;
   code?: string;
@@ -12,10 +27,10 @@ export interface SuccessResponse<T> {
 }
 
 // Define the structure for a failed response
-export interface ErrorResponse<T> {
+export interface ErrorResponse {
   success: false;    // Indicates failure
   message: string;  // Optional message (if any)
-  error?: T;     // The error
+  error?: any;     // The error
   code?: number;     // Optional error code
 }
 

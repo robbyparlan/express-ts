@@ -9,7 +9,7 @@
     "baseUrl": "./src",                       // Base directory to resolve non-relative module names
     "experimentalDecorators": true,           // Enable experimental support for decorators
     "emitDecoratorMetadata": true,            // Enable experimental metadata for decorators
-    "outDir": "./dist",                       // Specify output directory for compiled files
+    "outDir": "./build",                       // Specify output directory for compiled files
     "rootDir": "./src",                       // Specify root directory of input files
     "paths": {
       "*": ["node_modules/*"]                 // Allow module resolution for all files
